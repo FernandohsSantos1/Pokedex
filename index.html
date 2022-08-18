@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <link rel="icon" href="./favicons/favicon-16x16.png"/>
+    <link rel="stylesheet" href="./css/style.css">
+
+    <title>Pokedex</title>
+</head>
+<body>
+    
+    <main>
+        <div id="img">
+            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png" alt="pokemon" class="pokemon_image">
+        </div>
+           
+        
+        <h1 class="pokemon_data">
+            <span class="pokemon_number" id="number">25</span> - 
+            <span class="pokemon_name" id="name">pikachu</span>
+        </h1>
+
+        <form class="forms">
+            <input
+                id="id"
+                type="text"
+                class="input"
+                placeholder="Pokemon number"
+                required
+                
+            />
+            <button id="entrar" class="button entrar">GO</button>
+        </form>
+
+        <div class="buttons">
+            <button onclick="n = prev(n)" class="button btn-prev">Prev &lt;</button>
+            <button onclick="n = next(n)" class="button btn-next">Next &gt;</button>
+        </div>
+        
+        <img src="./img/pokedex.png" alt="pokedex" class="pokedex">
+
+
+    </main>
+    
+    
+    
+    
+    
+    
+    <script>
+        
+        document.getElementById('entrar').addEventListener('click', function(event){
+            event.preventDefault();
+            n = +document.getElementById('id').value;
+            pokemon(n)
+            
+            return n
+        })
+
+        var n = +document.getElementById('number').innerHTML;
+        const next = (n) => {
+            n = n+1
+            pokemon(n)  
+            return n;
+        }
+
+        const prev = (n) => {
+            
+            if (n>1){
+                n = n-1
+                pokemon(n)
+                return n;
+            }
+            
+        }
+        
+        const pokemon = (n) => {
+            return $.ajax({
+                url: `https://pokeapi.co/api/v2/pokemon/${n}`,
+                method: "get",
+                async: false,
+                success: function(resposta){
+                    var img = document.getElementById('img')
+                    var number = document.getElementById('number')
+                    var name = document.getElementById('name')
+                    img.innerHTML = '<img src="'+resposta['sprites']['front_default']+'" alt="pokemon" class="pokemon_image">';
+                    number.innerHTML = resposta['id']
+                    name.innerHTML = resposta['name']
+                    
+                }
+             }) 
+        }
+
+    </script>
+
+
+</body>
+</html>
